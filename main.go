@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 	"syscall"
 
 	"github.com/bwmarrin/discordgo"
@@ -32,4 +33,10 @@ func main(args []string) {
 	session.AddHandler(onMessageReactionRemove)
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	if err := session.Open(); err != nil {
+		panic(err)
+	}
+	defer session.Close()
+	go cyclePlayingStatus()
+	<-sc
 }
