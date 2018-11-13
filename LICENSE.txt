@@ -1,0 +1,3 @@
+This project is currently open source but proprietary software.  All rights reserved.
+
+Don't ask me to make it free to use, I already plan to relicense it CC0 eventually I just want to finish it first.
