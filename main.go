@@ -1,8 +1,14 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"io/ioutil"
+	"os"
+	"syscall"
+
+	"github.com/bwmarrin/discordgo"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main(args []string) {
@@ -24,4 +30,6 @@ func main(args []string) {
 	session.AddHandler(onMessageCreate)
 	session.AddHandler(onMessageReactionAdd)
 	session.AddHandler(onMessageReactionRemove)
+	sc := make(chan os.Signal, 1)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 }
