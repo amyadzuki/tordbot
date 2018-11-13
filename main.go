@@ -17,4 +17,11 @@ func main(args []string) {
 	if err != nil {
 		panic(err)
 	}
+	session, err := discordgo.New("Bot " + strings.TrimSpace(string(b)))
+	if err != nil {
+		panic(err)
+	}
+	session.AddHandler(onMessageCreate)
+	session.AddHandler(onMessageReactionAdd)
+	session.AddHandler(onMessageReactionRemove)
 }
