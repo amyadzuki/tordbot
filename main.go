@@ -12,6 +12,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+var Session *discordgo.Session
+
 func main(args []string) {
 	if len(args) != 3 {
 		fmt.Println("Usage:", args[0], "/path/to/token.dat /path/to/database.db")
@@ -24,19 +26,19 @@ func main(args []string) {
 	if err != nil {
 		panic(err)
 	}
-	session, err := discordgo.New("Bot " + strings.TrimSpace(string(b)))
+	Session, err := discordgo.New("Bot " + strings.TrimSpace(string(b)))
 	if err != nil {
 		panic(err)
 	}
-	session.AddHandler(onMessageCreate)
-	session.AddHandler(onMessageReactionAdd)
-	session.AddHandler(onMessageReactionRemove)
+	Session.AddHandler(onMessageCreate)
+	Session.AddHandler(onMessageReactionAdd)
+	Session.AddHandler(onMessageReactionRemove)
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
-	if err := session.Open(); err != nil {
+	if err := Session.Open(); err != nil {
 		panic(err)
 	}
-	defer session.Close()
+	defer Session.Close()
 	go cyclePlayingStatus()
 	<-sc
 }
