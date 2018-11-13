@@ -10,13 +10,18 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		return
 	}
 	payl := message.Content
-	if len(payl) < 2 {
+	if len(payl) < 4 {
 		return // attachment-only post, or just a comma
 	}
-	if payl[0] != ',' {
+	payl = strings.ToLower(payl)
+	if !strings.HasPrefix(payl, "tord") {
 		return
 	}
-	com, err := NewCom(s, message, payl[1:])
+	payl = payl[4:]
+	for len(payl) > 0 && payl[0] == ' ' {
+		payl = payl[1:]
+	}
+	com, err := NewCom(s, message, payl)
 	if err != nil {
 		return
 	}
