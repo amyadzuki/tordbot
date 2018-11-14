@@ -116,14 +116,14 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		author := mc.Message.Author.ID
 		switch strings.ToLower(cmdline[1]) {
 		case "dare":
-			addPrompt(channelID, author, "Dares", nsfwadd, at, prompt)
+			addPrompt(channelID, author, 1, nsfwadd, at, prompt)
 		case "truth":
-			addPrompt(channelID, author, "Truths", nsfwadd, at, prompt)
+			addPrompt(channelID, author, 0, nsfwadd, at, prompt)
 		}
 	case "dare":
-		givePrompt(channelID, author, "Dares", nsfwadd, at)
+		givePrompt(channelID, author, 1, nsfwadd, at)
 	case "truth":
-		givePrompt(channelID, author, "Truths", nsfwadd, at)
+		givePrompt(channelID, author, 0, nsfwadd, at)
 	case "help":
 	case "invite":
 		Session.ChannelMessageSend(channelID,
