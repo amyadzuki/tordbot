@@ -10,15 +10,15 @@ const (
 
 const AT_ANYWHERE = uint32(0xffff)
 
-func addPrompt(channelID, author string, dare int, nsfw, at uint32, prompt string) {
-	stmt, err := DB.Prepare(`INSERT INTO "Prompts" SET "dare" = ?, "nsfw" = ?, "at" = ?, "prompt" = ?, "blame" = ?`)
+func addPrompt(guildID, channelID, author string, dare int, nsfw, at uint32, prompt string) {
+	stmt, err := DB.Prepare(`INSERT INTO "Prompts" SET "guild" = ?, "dare" = ?, "nsfw" = ?, "at" = ?, "prompt" = ?, "blame" = ?`)
 	if err != nil {
 		Session.ChannelMessageSend(channelID,
 			"Error adding prompt during SQL Prepare: ``" +
 			err.Error() + "\u00b4\u00b4.")
 		return
 	}
-	err = DB.Exec(dare, nsfw, at, prompt, author)
+	err = DB.Exec(guildID, dare, nsfw, at, prompt, author)
 	if err != nil {
 		Session.ChannelMessageSend(channelID,
 			"Error adding prompt during SQL Exec: ``" +
@@ -30,8 +30,9 @@ func addPrompt(channelID, author string, dare int, nsfw, at uint32, prompt strin
 	return
 }
 
-func givePrompt(channelID, author string, dare int, nsfw, at uint32) {
-	stmt, err := DB.Prepare(`SELECT "prompt", "blame" FROM "Prompts" WHERE "dare" = ? AND "nsfw" = ? AND ` +
+func givePrompt(guildID, channelID, author string, dare int, nsfw, at uint32) {
+	stmt, err := DB.Prepare(`SELECT "prompt", "blame" FROM "Prompts" WHERE `+
+		`("guild" = 0 OR "guild" = ?) AND "dare" = ? AND "nsfw" = ? AND ` +
 		`(("at" & ?) <> 0) ORDER BY RANDOM LIMIT 1`)
 	if err != nil {
 		Session.ChannelMessageSend(channelID,
@@ -39,7 +40,7 @@ func givePrompt(channelID, author string, dare int, nsfw, at uint32) {
 			err.Error() + "\u00b4\u00b4.")
 		return
 	}
-	rows, err = DB.Query(table, nsfw, at, prompt, author)
+	rows, err = DB.Query(guildID, dare, nsfw, at)
 	if err != nil {
 		Session.ChannelMessageSend(channelID,
 			"Error adding prompt during SQL Query: ``" +
