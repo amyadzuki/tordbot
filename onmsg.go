@@ -16,11 +16,15 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		return // attachment-only post, or just a comma
 	}
 	lowr := strings.ToLower(payl)
-	if !strings.HasPrefix(lowr, "tod") {
+	if strings.HasPrefix(lowr, "tod") {
+		payl = payl[3:]
+		lowr = lowr[3:]
+	} else if strings.HasPrefix(lowr, "tord") {
+		payl = payl[4:]
+		lowr = lowr[4:]
+	} else {
 		return
 	}
-	payl = payl[3:]
-	lowr = lowr[3:]
 	for len(payl) > 0 && payl[0] == ' ' {
 		payl = payl[1:]
 		lowr = lowr[1:]
