@@ -18,7 +18,7 @@ func addPrompt(guildID, channelID, author string, dare int, nsfw, at uint32, pro
 			err.Error() + "\u00b4\u00b4.")
 		return
 	}
-	_, err = DB.Exec(guildID, dare, nsfw, at, prompt, author)
+	_, err = stmt.Exec(guildID, dare, nsfw, at, prompt, author)
 	if err != nil {
 		Session.ChannelMessageSend(channelID,
 			"Error adding prompt during SQL Exec: ``" +
@@ -40,7 +40,7 @@ func givePrompt(guildID, channelID, author string, dare int, nsfw, at uint32) {
 			err.Error() + "\u00b4\u00b4.")
 		return
 	}
-	rows, err := DB.Query(guildID, dare, nsfw, at)
+	rows, err := stmt.Query(guildID, dare, nsfw, at)
 	if err != nil {
 		Session.ChannelMessageSend(channelID,
 			"Error adding prompt during SQL Query: ``" +
