@@ -15,15 +15,15 @@ import (
 var DB *sql.DB
 var Session *discordgo.Session
 
-func main(args []string) {
-	if len(args) != 3 {
-		fmt.Println("Usage:", args[0], "/path/to/token.dat /path/to/database.db")
+func main() {
+	if len(os.Args) != 3 {
+		fmt.Println("Usage:", os.Args[0], "/path/to/token.dat /path/to/database.db")
 	}
-	b, err := ioutil.ReadFile(args[1])
+	b, err := ioutil.ReadFile(os.Args[1])
 	if err != nil {
 		panic(err)
 	}
-	db, err := sql.Open("sqlite3", args[2])
+	db, err := sql.Open("sqlite3", os.Args[2])
 	if err != nil {
 		panic(err)
 	}
