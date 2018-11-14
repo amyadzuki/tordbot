@@ -2,12 +2,13 @@ package main
 
 const (
 	AT_UNSPECIFIED = uint32(1) << iota,
-	AT_ANYWHERE,
 	AT_HOME_ALONE,
 	AT_HOME,
 	AT_WORK,
 	AT_SCHOOL,
 )
+
+const AT_ANYWHERE = uint32(0xffff)
 
 func addPrompt(channelID, blame, table string, nsfw, at uint32, prompt string) {
 	if at < 1 {
