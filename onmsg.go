@@ -10,7 +10,7 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		return
 	}
 	payl := message.Content
-	if len(payl) < 4 {
+	if len(payl) < 3 {
 		return // attachment-only post, or just a comma
 	}
 	payl = strings.ToLower(payl)
@@ -21,6 +21,10 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	for len(payl) > 0 && payl[0] == ' ' {
 		payl = payl[1:]
 	}
+	cmdline := strings.Split(payl)
+	if len(cmdline) < 1 {
+		return
+	}
 	channelID := mc.Message.ChannelID
 	channel, err := session.State.Channel(channelID)
 	if err != nil {
@@ -29,7 +33,11 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 			return
 		}
 	}
-	//
+	switch cmdline[0] {
+	case "dare":
+	case "help":
+	case "truth":
+	}
 }
 
 func onDare(s *discordgo.Session, mc *discordgo.MessageCreate) {
