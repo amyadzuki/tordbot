@@ -33,7 +33,7 @@ func addPrompt(guildID, channelID, author string, dare int, nsfw, at uint32, pro
 func givePrompt(guildID, channelID, author string, dare int, nsfw, at uint32) {
 	stmt, err := DB.Prepare(`SELECT "prompt", "blame" FROM "Prompts" WHERE `+
 		`("guild" = 0 OR "guild" = ?) AND "dare" = ? AND "nsfw" = ? AND ` +
-		`(("at" & ?) <> 0) ORDER BY RANDOM LIMIT 1`)
+		`(("at" & ?) <> 0) ORDER BY random() LIMIT 1`)
 	if err != nil {
 		Session.ChannelMessageSend(channelID,
 			"Error querying prompt during SQL Prepare: ``" +
