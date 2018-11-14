@@ -76,8 +76,14 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	u32nsfw := uint32(nsfw)
 	u32nsfw = ent1 % u32nsfw // first step
 	u32nsfw = (ent2 % u32nsfw + u32nsfw) / 2 // second step
-	if u32nsfw > 5 && !channel.NSFW {
-		u32nsfw = 5
+	if channel.NSFW {
+		if u32nsfw > 10 {
+			u32nsfw = 10
+		}
+	} else {
+		if u32nsfw > 5 {
+			u32nsfw = 5
+		}
 	}
 
 	at := uint32(0)
