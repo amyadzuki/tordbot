@@ -24,11 +24,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	db, err := sql.Open("sqlite3", os.Args[2])
+	DB, err = sql.Open("sqlite3", os.Args[2])
 	if err != nil {
 		panic(err)
 	}
-	DB = db
 	Session, err = discordgo.New("Bot " + strings.TrimSpace(string(b)))
 	if err != nil {
 		panic(err)
