@@ -23,10 +23,10 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		payl = payl[1:]
 		lowr = lowr[1:]
 	}
-	channelID := mc.Message.ChannelID
-	channel, err := session.State.Channel(channelID)
+	channelIDTmp := mc.Message.ChannelID
+	channel, err := session.State.Channel(channelIDTmp)
 	if err != nil {
-		channel, err = session.Channel(channelID)
+		channel, err = session.Channel(channelIDTmp)
 		if err != nil {
 			return
 		}
@@ -107,7 +107,7 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	switch strings.ToLower(cmdline[0]) {
 	case "add":
 		if len(cmdline) < 2 {
-			Session.ChannelMessageSend(channelID,
+			Session.ChannelMessageSend(channel.ID,
 				"Join our public Google Doc here to suggest stuff:\n" +
 				"https://docs.google.com/document/d/" +
 				"1NsD_0fASVaixXJAtWIF4tUVRG9vBiSyyiqM_Sb1Hl2c/edit?usp=sharing")
@@ -116,17 +116,17 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		author := mc.Message.Author.ID
 		switch strings.ToLower(cmdline[1]) {
 		case "dare":
-			addPrompt(channelID, author, 1, nsfwadd, at, prompt)
+			addPrompt(channel.GuildID, channel.ID, author, 1, nsfwadd, at, prompt)
 		case "truth":
-			addPrompt(channelID, author, 0, nsfwadd, at, prompt)
+			addPrompt(channel.GuildID, channel.ID, author, 0, nsfwadd, at, prompt)
 		}
 	case "dare":
-		givePrompt(channelID, author, 1, nsfwadd, at)
+		givePrompt(channel.GuildID, channel.ID, author, 1, nsfwadd, at)
 	case "truth":
-		givePrompt(channelID, author, 0, nsfwadd, at)
+		givePrompt(channel.GuildID, channel.ID, author, 0, nsfwadd, at)
 	case "help":
 	case "invite":
-		Session.ChannelMessageSend(channelID,
+		Session.ChannelMessageSend(channel.ID,
 			"https://discordapp.com/oauth2/authorize?client_id=" +
 			"512117311" + "415648275&scope=bot&permissions=378" + "944")
 	}
