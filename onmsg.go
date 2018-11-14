@@ -14,7 +14,7 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		return // attachment-only post, or just a comma
 	}
 	payl = strings.ToLower(payl)
-	if !strings.HasPrefix(payl, "tord") {
+	if !strings.HasPrefix(payl, "tod") {
 		return
 	}
 	payl = payl[4:]
