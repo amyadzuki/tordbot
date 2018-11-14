@@ -21,11 +21,21 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	for len(payl) > 0 && payl[0] == ' ' {
 		payl = payl[1:]
 	}
-	com, err := NewCom(s, message, payl)
+	channelID := mc.Message.ChannelID
+	channel, err := session.State.Channel(channelID)
 	if err != nil {
-		return
+		channel, err = session.Channel(channelID)
+		if err != nil {
+			return
+		}
 	}
-	com.Lex()
+	//
+}
+
+func onDare(s *discordgo.Session, mc *discordgo.MessageCreate) {
+}
+
+func onTruth(s *discordgo.Session, mc *discordgo.MessageCreate) {
 }
 
 func onMessageDelete(s *discordgo.Session, md *discordgo.MessageDelete) {
