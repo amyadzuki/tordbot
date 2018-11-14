@@ -68,14 +68,39 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	if channel.NSFW {
 		nsfw += nsfw
 	}
+	entropy := PRG.Uint64()
+	ent1 := uint32(entropy & uint64(0xffffffff))
+	ent2 := uint32(entropy >> 32 & uint64(0xffffffff))
 	u32nsfw := uint32(nsfw)
-	u32nsfw = prg.Uint32() % u32nsfw // first step
-	u32nsfw = (prg.Uint32() % u32nsfw + u32nsfw) / 2 // second step
+	u32nsfw = ent1 % u32nsfw // first step
+	u32nsfw = (ent2 % u32nsfw + u32nsfw) / 2 // second step
 	if u32nsfw > 5 && !channel.NSFW {
 		u32nsfw = 5
 	}
 
+	at := uint32(0)
 	cmdline := strings.Split(payl)
+	for len(cmdline) >= 2 && strings.ToLower(cmdline[0]) == "at" {
+		switch strings.ToLower(cmdline[1]) {
+		case "anywhere":
+			at |= 0xffff
+		case "homealone":
+			at |= AT_HOME | AT_HOME_ALONE
+		case "home":
+			at |= AT_HOME
+			if len(cmdline) >= 3 && strings.ToLower(cmdline[2]) == "alone" {
+				at |= AT_HOME_ALONE
+			}
+		case "work":
+			at |= AT_WORK
+		case "school":
+			at |= AT_SCHOOL
+		}
+		cmdline = cmdline[2:]
+	}
+	if at < 1 {
+		at = AT_UNSPECIFIED
+	}
 	if len(cmdline) < 1 {
 		return
 	}
@@ -88,19 +113,22 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 				"1NsD_0fASVaixXJAtWIF4tUVRG9vBiSyyiqM_Sb1Hl2c/edit?usp=sharing")
 		}
 		prompt := strings.Join(cmdline[2:], " ")
+		author := mc.Message.Author.ID
 		switch strings.ToLower(cmdline[1]) {
 		case "dare":
-			addPrompt("Dares", nsfwadd, prompt)
+			addPrompt(channelID, author, "Dares", nsfwadd, at, prompt)
 		case "truth":
-			addPrompt("Truths", nsfwadd, prompt)
+			addPrompt(channelID, author, "Truths", nsfwadd, at, prompt)
 		}
 	case "dare":
+		givePrompt(channelID, author, "Dares", nsfwadd, at)
+	case "truth":
+		givePrompt(channelID, author, "Truths", nsfwadd, at)
 	case "help":
 	case "invite":
 		Session.ChannelMessageSend(channelID,
 			"https://discordapp.com/oauth2/authorize?client_id=" +
 			"512117311" + "415648275&scope=bot&permissions=378" + "944")
-	case "truth":
 	}
 }
 
