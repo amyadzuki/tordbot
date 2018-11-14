@@ -33,7 +33,7 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 			return
 		}
 	}
-	very := 0
+	very := 1
 	for strings.HasPrefix(lowr, "very") {
 		payl = payl[4:]
 		lowr = lowr[4:]
@@ -62,29 +62,34 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	} else {
 		very = 0
 	}
-	nsfw := 5 + 2 * very
-	if nsfw < 0 {
-		nsfw = 0
-	}
+	nsfw := 1 + very
 	nsfwadd := uint32(nsfw)
+	if nsfwadd < 0 {
+		nsfwadd = 0
+	}
+	if nsfwadd > 3 {
+		nsfwadd = 3
+	}
 	if channel.NSFW {
-		nsfw += nsfw
+		nsfw += 2
 	}
 	entropy := PRG.Uint64()
-	ent1 := uint32(entropy & uint64(0xffffffff))
-	ent2 := uint32(entropy >> 32 & uint64(0xffffffff))
-	u32nsfw := uint32(nsfw)
-	u32nsfw = ent1 % u32nsfw // first step
-	u32nsfw = (ent2 % u32nsfw + u32nsfw) / 2 // second step
-	if channel.NSFW {
-		if u32nsfw > 10 {
-			u32nsfw = 10
-		}
-	} else {
-		if u32nsfw > 5 {
-			u32nsfw = 5
+	if (entropy & 0x3) == 0 {
+		if entropy & 0x4 == 0 {
+			nsfw--
+		} else {
+			nsfw++
 		}
 	}
+	if nsfw < 0 {
+		nsfw = 0
+	} else if nsfw > 1 && !channel.NSFW {
+		nsfw = 1
+	} else if nsfw > 3 {
+		nsfw = 3
+	}
+
+	u32nsfw := uint32(nsfw)
 
 	at := uint32(0)
 	cmdline := strings.Fields(payl)
