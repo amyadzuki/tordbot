@@ -12,6 +12,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+var DB *sql.DB
 var Session *discordgo.Session
 
 func main(args []string) {
@@ -26,6 +27,7 @@ func main(args []string) {
 	if err != nil {
 		panic(err)
 	}
+	DB = db
 	Session, err := discordgo.New("Bot " + strings.TrimSpace(string(b)))
 	if err != nil {
 		panic(err)
