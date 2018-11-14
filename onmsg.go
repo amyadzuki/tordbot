@@ -83,7 +83,7 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	for len(cmdline) >= 2 && strings.ToLower(cmdline[0]) == "at" {
 		switch strings.ToLower(cmdline[1]) {
 		case "anywhere":
-			at |= 0xffff
+			at |= AT_ANYWHERE
 		case "homealone":
 			at |= AT_HOME | AT_HOME_ALONE
 		case "home":
