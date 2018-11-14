@@ -65,13 +65,17 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		return
 	}
 	embed := new(discordgo.Embed)
-	switch cmdline[0] {
+	switch strings.ToLower(cmdline[0]) {
 	case "add":
 		if len(cmdline) < 2 {
 			Session.ChannelMessageSend(channelID,
 				"Join our public Google Doc here to suggest stuff:\n" +
 				"https://docs.google.com/document/d/" +
 				"1NsD_0fASVaixXJAtWIF4tUVRG9vBiSyyiqM_Sb1Hl2c/edit?usp=sharing")
+		}
+		switch strings.ToLower(cmdline[1]) {
+		case "dare":
+		case "truth":
 		}
 	case "dare":
 	case "help":
