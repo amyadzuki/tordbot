@@ -29,7 +29,7 @@ func main() {
 		panic(err)
 	}
 	DB = db
-	Session, err := discordgo.New("Bot " + strings.TrimSpace(string(b)))
+	Session, err = discordgo.New("Bot " + strings.TrimSpace(string(b)))
 	if err != nil {
 		panic(err)
 	}
