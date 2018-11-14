@@ -5,9 +5,9 @@ import (
 	"time"
 )
 
-var PlayingFrequent = []string{
-	"Prefix is tord",
-	"Try tord help",
+var Playing = []string{
+	"Prefix is tod",
+	"Try tod help",
 	"with a bunch of cuties",
 }
 
