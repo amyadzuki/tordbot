@@ -112,8 +112,8 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		if len(cmdline) < 2 {
 			Session.ChannelMessageSend(channel.ID,
 				"Join our public Google Doc here to suggest stuff:\n" +
-				"https://docs.google.com/document/d/" +
-				"1NsD_0fASVaixXJAtWIF4tUVRG9vBiSyyiqM_Sb1Hl2c/edit?usp=sharing")
+				"<https://docs.google.com/document/d/" +
+				"1NsD_0fASVaixXJAtWIF4tUVRG9vBiSyyiqM_Sb1Hl2c/edit?usp=sharing>")
 		}
 		prompt := strings.Join(cmdline[2:], " ")
 		switch strings.ToLower(cmdline[1]) {
@@ -129,8 +129,8 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	case "help":
 	case "invite":
 		Session.ChannelMessageSend(channel.ID,
-			"https://discordapp.com/oauth2/authorize?client_id=" +
-			"512117311" + "415648275&scope=bot&permissions=378" + "944")
+			"<https://discordapp.com/oauth2/authorize?client_id=" +
+			"512117311" + "415648275&scope=bot&permissions=378" + "944>")
 	}
 }
 
