@@ -13,13 +13,15 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	if len(payl) < 3 {
 		return // attachment-only post, or just a comma
 	}
-	payl = strings.ToLower(payl)
-	if !strings.HasPrefix(payl, "tod") {
+	lowr = strings.ToLower(payl)
+	if !strings.HasPrefix(lowr, "tod") {
 		return
 	}
-	payl = payl[4:]
+	payl = payl[3:]
+	lowr = lowr[3:]
 	for len(payl) > 0 && payl[0] == ' ' {
 		payl = payl[1:]
+		lowr = lowr[1:]
 	}
 	channelID := mc.Message.ChannelID
 	channel, err := session.State.Channel(channelID)
@@ -34,17 +36,20 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		nsfw = 5
 	}
 	very := false
-	if strings.HasPrefix(payl, "very") {
+	if strings.HasPrefix(lowr, "very") {
 		payl = payl[4:]
+		lowr = lowr[4:]
 		very = true
 	}
-	if strings.HasPrefix(payl, "sfw") {
+	if strings.HasPrefix(lowr, "sfw") {
 		payl = payl[3:]
+		lowr = lowr[3:]
 		if very {
 			nsfw /= 2 // 0 or 2
 		} // else 1 or 5
-	} else if strings.HasPrefix(payl, "nsfw") {
+	} else if strings.HasPrefix(lowr, "nsfw") {
 		payl = payl[4:]
+		lowr = lowr[4:]
 		if very {
 			nsfw += 2 // 3 or 7
 		} else {
@@ -59,7 +64,15 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	if len(cmdline) < 1 {
 		return
 	}
+	embed := new(discordgo.Embed)
 	switch cmdline[0] {
+	case "add":
+		if len(cmdline) < 2 {
+			Session.ChannelMessageSend(channelID,
+				"Join our public Google Doc here to suggest stuff:\n" +
+				"https://docs.google.com/document/d/" +
+				"1NsD_0fASVaixXJAtWIF4tUVRG9vBiSyyiqM_Sb1Hl2c/edit?usp=sharing")
+		}
 	case "dare":
 	case "help":
 	case "truth":
