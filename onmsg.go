@@ -134,9 +134,9 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 			addPrompt(channel.GuildID, channel.ID, author, 0, nsfwadd, at, prompt)
 		}
 	case "dare":
-		givePrompt(channel.GuildID, channel.ID, author, 1, nsfwadd, at)
+		givePrompt(channel.GuildID, channel.ID, author, 1, u32nsfw, at)
 	case "truth":
-		givePrompt(channel.GuildID, channel.ID, author, 0, nsfwadd, at)
+		givePrompt(channel.GuildID, channel.ID, author, 0, u32nsfw, at)
 	case "help":
 	case "invite":
 		Session.ChannelMessageSend(channel.ID,
