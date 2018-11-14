@@ -71,11 +71,11 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		nsfwadd = 3
 	}
 	if channel.NSFW {
-		nsfw += 2
+		nsfw++
 	}
-	entropy := PRG.Uint64()
-	if (entropy & 0x3) == 0 {
-		if entropy & 0x4 == 0 {
+	entropy := PRG.Uint32()
+	if (entropy & 0x1) == 0 {
+		if entropy & 0x2 == 0 {
 			nsfw--
 		} else {
 			nsfw++
