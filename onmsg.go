@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -13,7 +15,7 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	if len(payl) < 3 {
 		return // attachment-only post, or just a comma
 	}
-	lowr = strings.ToLower(payl)
+	lowr := strings.ToLower(payl)
 	if !strings.HasPrefix(lowr, "tod") {
 		return
 	}
