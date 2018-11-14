@@ -81,7 +81,7 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	}
 
 	at := uint32(0)
-	cmdline := strings.Split(payl)
+	cmdline := strings.Fields(payl)
 	for len(cmdline) >= 2 && strings.ToLower(cmdline[0]) == "at" {
 		switch strings.ToLower(cmdline[1]) {
 		case "anywhere":
@@ -106,6 +106,7 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	if len(cmdline) < 1 {
 		return
 	}
+	author := mc.Message.Author.ID
 	switch strings.ToLower(cmdline[0]) {
 	case "add":
 		if len(cmdline) < 2 {
@@ -115,7 +116,6 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 				"1NsD_0fASVaixXJAtWIF4tUVRG9vBiSyyiqM_Sb1Hl2c/edit?usp=sharing")
 		}
 		prompt := strings.Join(cmdline[2:], " ")
-		author := mc.Message.Author.ID
 		switch strings.ToLower(cmdline[1]) {
 		case "dare":
 			addPrompt(channel.GuildID, channel.ID, author, 1, nsfwadd, at, prompt)
