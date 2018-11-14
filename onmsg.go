@@ -26,9 +26,9 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		lowr = lowr[1:]
 	}
 	channelIDTmp := mc.Message.ChannelID
-	channel, err := session.State.Channel(channelIDTmp)
+	channel, err := Session.State.Channel(channelIDTmp)
 	if err != nil {
-		channel, err = session.Channel(channelIDTmp)
+		channel, err = Session.Channel(channelIDTmp)
 		if err != nil {
 			return
 		}
