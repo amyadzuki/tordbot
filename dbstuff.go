@@ -36,14 +36,14 @@ func givePrompt(guildID, channelID, author string, dare int, nsfw, at uint32) {
 		`(("at" & ?) <> 0) ORDER BY RANDOM LIMIT 1`)
 	if err != nil {
 		Session.ChannelMessageSend(channelID,
-			"Error adding prompt during SQL Prepare: ``" +
+			"Error querying prompt during SQL Prepare: ``" +
 			err.Error() + "\u00b4\u00b4.")
 		return
 	}
 	rows, err := stmt.Query(guildID, dare, nsfw, at)
 	if err != nil {
 		Session.ChannelMessageSend(channelID,
-			"Error adding prompt during SQL Query: ``" +
+			"Error querying prompt during SQL Query: ``" +
 			err.Error() + "\u00b4\u00b4.")
 		return
 	}
@@ -56,7 +56,7 @@ func givePrompt(guildID, channelID, author string, dare int, nsfw, at uint32) {
 	err = rows.Scan(&prompt, &blame)
 	if err != nil {
 		Session.ChannelMessageSend(channelID,
-			"Error adding prompt during SQL Scan: ``" +
+			"Error querying prompt during SQL Scan: ``" +
 			err.Error() + "\u00b4\u00b4.")
 		return
 	}
