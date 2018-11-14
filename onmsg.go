@@ -69,8 +69,8 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		nsfw += nsfw
 	}
 	u32nsfw := uint32(nsfw)
-	u32nsfw = prg.Uint32() % u32nsfw
-	u32nsfw = prg.Uint32() % u32nsfw
+	u32nsfw = prg.Uint32() % u32nsfw // first step
+	u32nsfw = (prg.Uint32() % u32nsfw + u32nsfw) / 2 // second step
 	if u32nsfw > 5 && !channel.NSFW {
 		u32nsfw = 5
 	}
@@ -90,9 +90,9 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		prompt := strings.Join(cmdline[2:], " ")
 		switch strings.ToLower(cmdline[1]) {
 		case "dare":
-			addPrompt("Dares", prompt)
+			addPrompt("Dares", nsfwadd, prompt)
 		case "truth":
-			addPrompt("Truths", prompt)
+			addPrompt("Truths", nsfwadd, prompt)
 		}
 	case "dare":
 	case "help":
