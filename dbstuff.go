@@ -1,11 +1,11 @@
 package main
 
 const (
-	AT_UNSPECIFIED = uint32(1) << iota,
-	AT_HOME_ALONE,
-	AT_HOME,
-	AT_WORK,
-	AT_SCHOOL,
+	AT_UNSPECIFIED = uint32(1) << iota
+	AT_HOME_ALONE
+	AT_HOME
+	AT_WORK
+	AT_SCHOOL
 )
 
 const AT_ANYWHERE = uint32(0xffff)
