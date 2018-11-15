@@ -11,7 +11,8 @@ const (
 const AT_ANYWHERE = uint32(0xffff)
 
 func addPrompt(guildID, channelID, author string, dare int, nsfw, at uint32, prompt string) {
-	stmt, err := DB.Prepare(`INSERT INTO "Prompts" SET "guild" = ?, "dare" = ?, "nsfw" = ?, "at" = ?, "prompt" = ?, "blame" = ?`)
+	stmt, err := DB.Prepare(`INSERT INTO "Prompts" ("guild", "dare", "nsfw", "at", "prompt", "blame") ` +
+		`VALUES (?, ?, ?, ?, ?, ?)`)
 	if err != nil {
 		Session.ChannelMessageSend(channelID,
 			"Error adding prompt during SQL Prepare: ``" +
