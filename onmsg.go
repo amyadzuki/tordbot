@@ -136,6 +136,9 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 			addPrompt(channel.GuildID, channel.ID, author, 1, nsfwadd, at, prompt)
 		case "truth":
 			addPrompt(channel.GuildID, channel.ID, author, 0, nsfwadd, at, prompt)
+		default:
+			Session.ChannelMessageSend(channel.ID,
+				"Unknown add command ``" + cmdline[1] + "\u00b4\u00b4.")
 		}
 	case "dare":
 		givePrompt(channel.GuildID, channel.ID, author, 1, u32nsfw, at)
@@ -146,6 +149,9 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		Session.ChannelMessageSend(channel.ID,
 			"<https://discordapp.com/oauth2/authorize?client_id=" +
 			"512117311" + "415648275&scope=bot&permissions=378" + "944>")
+	default:
+		Session.ChannelMessageSend(channel.ID,
+			"Unknown command ``" + cmdline[0] + "\u00b4\u00b4.")
 	}
 }
 
