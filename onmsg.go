@@ -67,13 +67,14 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 		very = 0
 	}
 	nsfw := 1 + very
-	nsfwadd := uint32(nsfw)
-	if nsfwadd < 0 {
-		nsfwadd = 0
+	nsfwaddTmp := nsfw
+	if nsfwaddTmp < 0 {
+		nsfwaddTmp = 0
 	}
-	if nsfwadd > 3 {
-		nsfwadd = 3
+	if nsfwaddTmp > 3 {
+		nsfwaddTmp = 3
 	}
+	nsfwadd := uint32(nsfwaddTmp)
 	if channel.NSFW {
 		nsfw++
 	}
