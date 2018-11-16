@@ -110,17 +110,31 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		givePrompt(channel.GuildID, channel.ID, author, 0, nsfw32, at, ent)
 	case "dare":
 		givePrompt(channel.GuildID, channel.ID, author, 1, nsfw32, at, ent)
-	case "go":
+	case "either", "go":
 		d := uint32(ent) & 1
 		ent >>= 1
 		givePrompt(channel.GuildID, channel.ID, author, d, nsfw32, at, ent)
 	case "fix":
+		Session.ChannelMessageSend(channel.ID,
+			"fix command coming soon")
 	case "help":
+		Session.ChannelMessageSend(channel.ID,
+			"Prefix is 'tord' and will eventually also respond to 'tod'." +
+			"\n" + "Command list:" +
+			"\n" + "'truth'          - get a truth prompt" +
+			"\n" + "'dare'           - get a dare prompt" +
+			"\n" + "'go' or 'either' - get a prompt of a random type" +
+			"\n" + "'fix'            - fix common problems automatically" +
+			"\n" + "'invite'         - the invite link" +
+			"\n" + "'pass' or 'skip' - skip your turn" +
+			"")
 	case "invite":
 		Session.ChannelMessageSend(channel.ID,
 			"<https://discordapp.com/oauth2/authorize?client_id=" +
 			"512117311" + "415648275&scope=bot&permissions=378" + "944>")
 	case "pass", "skip":
+		Session.ChannelMessageSend(channel.ID,
+			"pass/skip command coming soon")
 	default:
 		Session.ChannelMessageSend(channel.ID,
 			"Unknown command ``" + tail + "\u00b4\u00b4.")
