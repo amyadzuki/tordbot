@@ -1,16 +1,14 @@
 package main
 
 import (
-	"strings"
-
 	"github.com/bwmarrin/discordgo"
 )
 
 func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
+	message := mc.Message
 	if message.Author.Bot {
 		return
 	}
-	message := mc.Message
 	lex(s, message)
 }
 
