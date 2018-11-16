@@ -24,4 +24,15 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 	} else {
 		return
 	}
+
+	for {
+		for len(tail) > 0 && tail[0] == ' ' {
+			tail = tail[1:]
+		}
+		if b, t := chp(tail, "at "); b {
+			tail = t
+		} else if b, t := chp(tail, "anywhere "); b {
+			at |= AT_ANYWHERE
+		}
+	}
 }
