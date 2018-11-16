@@ -4,5 +4,9 @@ import (
 	"strings"
 )
 
-func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
+func caseHasPrefix(s, prefix string) bool {
+}
+
+func lex(s *discordgo.Session, m *discordgo.Message) {
+	s
 }
