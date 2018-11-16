@@ -142,7 +142,7 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		for len(tail) > 0 && tail[0] == ' ' {
 			tail = tail[1:]
 		}
-		addPrompt(channel.GuildID, channel.ID, author, dare, nsfw32, at, tail)
+		addPrompt(channel.GuildID, channel.ID, author, dare, nsfwadd32, at, tail)
 		return
 	}
 	switch tail {
