@@ -2,6 +2,8 @@ package main
 
 import (
 	"strings"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func chp(s, prefix string) (bool, string) {
@@ -25,8 +27,8 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		return
 	}
 
-	author := mc.Message.Author.ID
-	channelIDTmp := mc.Message.ChannelID
+	author := m.Author.ID
+	channelIDTmp := m.ChannelID
 	channel, err := Session.State.Channel(channelIDTmp)
 	if err != nil {
 		channel, err = Session.Channel(channelIDTmp)
