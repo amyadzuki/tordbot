@@ -180,10 +180,14 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 			"\n" + "'truth'          - get a truth prompt" +
 			"\n" + "'dare'           - get a dare prompt" +
 			"\n" + "'go' or 'either' - get a prompt of a random type" +
+			"\n" +
 			"\n" + "'fix'            - fix common problems automatically" +
 			"\n" + "'invite'         - the invite link" +
 			"\n" + "'pass' or 'skip' - skip your turn" +
+			"\n" + "'score'          - check your score" +
+			"\n" + "'scores'         - view the score of everyone playing" +
 			"\n" + "'suggest'        - get a link to the suggestion doc" +
+			"\n" + "'turns'          - view the turn order" +
 			"\n" + "```" +
 			"")
 	case "invite ":
@@ -193,11 +197,20 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 	case "pass ", "skip ":
 		Session.ChannelMessageSend(channel.ID,
 			"pass/skip command coming soon")
+	case "score ":
+		Session.ChannelMessageSend(channel.ID,
+			"score command coming soon")
+	case "scores ":
+		Session.ChannelMessageSend(channel.ID,
+			"scores command coming soon")
 	case "suggest ":
 		Session.ChannelMessageSend(channel.ID,
 			"Join our public Google Doc here to suggest stuff:\n" +
 			"<https://docs.google.com/document/d/" +
 			"1NsD_0fASVaixXJAtWIF4tUVRG9vBiSyyiqM_Sb1Hl2c/edit?usp=sharing>")
+	case "turns ":
+		Session.ChannelMessageSend(channel.ID,
+			"turns command coming soon")
 	default:
 		Session.ChannelMessageSend(channel.ID,
 			"Unknown command ``" + tail + "\u00b4\u00b4.")
