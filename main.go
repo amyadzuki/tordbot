@@ -21,6 +21,7 @@ func main() {
 		fmt.Println("Usage:", os.Args[0], "init /path/to/database.db")
 		fmt.Println("Usage:", os.Args[0], "/path/to/token.dat /path/to/database.db")
 	}
+	var err error
 	DB, err = sql.Open("sqlite3", os.Args[2])
 	if err != nil {
 		panic(err)
