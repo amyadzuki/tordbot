@@ -6,6 +6,7 @@ const (
 	AT_HOME
 	AT_WORK
 	AT_SCHOOL
+	AT_CAR
 )
 
 const AT_ANYWHERE = uint32(0xffff)
