@@ -44,28 +44,37 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		}
 		if false {
 		} else if b, t := chp(tail, "alone "); b {
+			tail = t
 			if (at & AT_HOME) != 0 {
 				at |= AT_HOMEALONE
 			}
 		} else if b, t := chp(tail, "anywhere "); b {
+			tail = t
 			at |= AT_ANYWHERE
 		} else if b, t := chp(tail, "at "); b {
 			tail = t
 		} else if b, t := chp(tail, "home "); b {
+			tail = t
 			at |= AT_HOME
 		} else if b, t := chp(tail, "homealone "); b {
+			tail = t
 			at |= AT_HOMEALONE
 		} else if b, t := chp(tail, "nsfw "); b {
+			tail = t
 			nsfwi += very
 			very = 1
 		} else if b, t := chp(tail, "school "); b {
+			tail = t
 			at |= AT_SCHOOL
 		} else if b, t := chp(tail, "sfw "); b {
+			tail = t
 			nsfwi -= very
 			very = 1
 		} else if b, t := chp(tail, "very "); b {
+			tail = t
 			very++
 		} else if b, t := chp(tail, "work "); b {
+			tail = t
 			at |= AT_WORK
 		} else {
 			break
@@ -97,12 +106,33 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 	}
 	nsfw32 := uint32(nsfw)
 	if b, t := chp(tail, "add"); b {
+		tail = t
+		for len(tail) > 0 && tail[0] == ' ' {
+			tail = tail[1:]
+		}
 		if nsfwaddi < 0 {
 			nsfwaddi = 0
 		} else if nsfwaddi > 3 {
 			nsfwaddi = 3
 		}
 		nsfwadd32 := uint32(nsfwaddi)
+		var dare uint32
+		if false {
+		} else if b, t := chp(tail, "truth "); b {
+			tail = t
+			dare = 0
+		} else if b, t := chp(tail, "dare "); b {
+			tail = t
+			dare = 1
+		} else {
+			Session.ChannelMessageSend(channel.ID,
+				"Unknown add sub-command ``" + tail + "\u00b4\u00b4.")
+			return
+		}
+		for len(tail) > 0 && tail[0] == ' ' {
+			tail = tail[1:]
+		}
+		addPrompt(channel.GuildID, channel.ID, author, dare, nsfw32, at, tail)
 		return
 	}
 	switch tail {
