@@ -157,6 +157,7 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 			"\n" + "'fix'            - fix common problems automatically" +
 			"\n" + "'invite'         - the invite link" +
 			"\n" + "'pass' or 'skip' - skip your turn" +
+			"\n" + "'suggest'        - get a link to the suggestion doc" +
 			"")
 	case "invite":
 		Session.ChannelMessageSend(channel.ID,
@@ -165,6 +166,11 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 	case "pass", "skip":
 		Session.ChannelMessageSend(channel.ID,
 			"pass/skip command coming soon")
+	case "suggest":
+		Session.ChannelMessageSend(channel.ID,
+			"Join our public Google Doc here to suggest stuff:\n" +
+			"<https://docs.google.com/document/d/" +
+			"1NsD_0fASVaixXJAtWIF4tUVRG9vBiSyyiqM_Sb1Hl2c/edit?usp=sharing>")
 	default:
 		Session.ChannelMessageSend(channel.ID,
 			"Unknown command ``" + tail + "\u00b4\u00b4.")
