@@ -25,6 +25,15 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		return
 	}
 
+	channelIDTmp := mc.Message.ChannelID
+	channel, err := Session.State.Channel(channelIDTmp)
+	if err != nil {
+		channel, err = Session.Channel(channelIDTmp)
+		if err != nil {
+			return
+		}
+	}
+
 	var at, dare uint32
 	very := 1
 	var sfw, nsfw bool
