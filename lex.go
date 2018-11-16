@@ -56,6 +56,23 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 			very++
 		} else if b, t := chp(tail, "work "); b {
 			at |= AT_WORK
+		} else {
+			break
 		}
+	}
+	ent := PRG.Uint64()
+	switch tail {
+	case "truth":
+		givePrompt(channel.GuildID, channel.ID, author, 0, u32nsfw, at, ent)
+	case "dare":
+		givePrompt(channel.GuildID, channel.ID, author, 1, u32nsfw, at, ent)
+	case "go":
+		d := uint32(ent) & 1
+		ent >>= 1
+		givePrompt(channel.GuildID, channel.ID, author, d, u32nsfw, at, ent)
+	case "fix":
+	case "help":
+	case "invite":
+	case "pass", "skip":
 	}
 }
