@@ -18,7 +18,7 @@ func chp(s, prefix string) (bool, string) {
 }
 
 func lex(s *discordgo.Session, m *discordgo.Message) {
-	tail := m.Content
+	tail := m.Content + ' '
 	if b, t := chp(tail, "tord"); b {
 		tail = t
 	} else if b, t := chp(tail, "tod"); false && b {
@@ -146,18 +146,21 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		return
 	}
 	switch tail {
-	case "truth":
+	case " ":
+		Session.ChannelMessageSend(channel.ID,
+			"empty command to update settings coming soon")
+	case "truth ":
 		givePrompt(channel.GuildID, channel.ID, author, 0, nsfw32, at, ent)
-	case "dare":
+	case "dare ":
 		givePrompt(channel.GuildID, channel.ID, author, 1, nsfw32, at, ent)
-	case "either", "go":
+	case "either ", "go ":
 		d := int(uint32(ent) & 1)
 		ent >>= 1
 		givePrompt(channel.GuildID, channel.ID, author, d, nsfw32, at, ent)
-	case "fix":
+	case "fix ":
 		Session.ChannelMessageSend(channel.ID,
 			"fix command coming soon")
-	case "help":
+	case "help ":
 		Session.ChannelMessageSend(channel.ID,
 			"Prefix is 'tord' and will eventually also respond to 'tod'." +
 			"\n" + "Pre-command modifiers:" +
@@ -183,14 +186,14 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 			"\n" + "'suggest'        - get a link to the suggestion doc" +
 			"\n" + "```" +
 			"")
-	case "invite":
+	case "invite ":
 		Session.ChannelMessageSend(channel.ID,
 			"<https://discordapp.com/oauth2/authorize?client_id=" +
 			"512117311" + "415648275&scope=bot&permissions=378" + "944>")
-	case "pass", "skip":
+	case "pass ", "skip ":
 		Session.ChannelMessageSend(channel.ID,
 			"pass/skip command coming soon")
-	case "suggest":
+	case "suggest ":
 		Session.ChannelMessageSend(channel.ID,
 			"Join our public Google Doc here to suggest stuff:\n" +
 			"<https://docs.google.com/document/d/" +
