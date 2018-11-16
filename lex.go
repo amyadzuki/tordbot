@@ -38,7 +38,6 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 	}
 
 	var at uint32
-	var dare int
 	very, nsfwi := 1, 1
 
 	for {
@@ -128,9 +127,8 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 			nsfwaddi = 3
 		}
 		nsfwadd32 := uint32(nsfwaddi)
-		var dare uint32
-		if false {
-		} else if b, t := chp(tail, "truth "); b {
+		var dare int
+		if b, t := chp(tail, "truth "); b {
 			tail = t
 			dare = 0
 		} else if b, t := chp(tail, "dare "); b {
@@ -153,7 +151,7 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 	case "dare":
 		givePrompt(channel.GuildID, channel.ID, author, 1, nsfw32, at, ent)
 	case "either", "go":
-		d := uint32(ent) & 1
+		d := int(uint32(ent) & 1)
 		ent >>= 1
 		givePrompt(channel.GuildID, channel.ID, author, d, nsfw32, at, ent)
 	case "fix":
