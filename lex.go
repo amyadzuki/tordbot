@@ -42,7 +42,10 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		for len(tail) > 0 && tail[0] == ' ' {
 			tail = tail[1:]
 		}
-		if false {
+		if b, t := chp(tail, "a "); b {
+			tail = t
+		} else if b, t := chp(tail, "an "); b {
+			tail = t
 		} else if b, t := chp(tail, "alone "); b {
 			tail = t
 			if (at & AT_HOME) != 0 {
@@ -59,6 +62,12 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		} else if b, t := chp(tail, "homealone "); b {
 			tail = t
 			at |= AT_HOMEALONE
+		} else if b, t := chp(tail, "i'm "); b {
+			tail = t
+		} else if b, t := chp(tail, "im "); b {
+			tail = t
+		} else if b, t := chp(tail, "in "); b {
+			tail = t
 		} else if b, t := chp(tail, "nsfw "); b {
 			tail = t
 			nsfwi += very
