@@ -65,3 +65,9 @@ func givePrompt(guildID, channelID, author string, dare int, nsfw, at uint32, en
 	Session.ChannelMessageSend(channelID, "<@!" + author + ">, " + prompt + " (added by " + blame + ")")
 	return
 }
+
+func install(vis string) {
+}
+
+func deinstall() {
+}
