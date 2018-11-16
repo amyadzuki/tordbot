@@ -101,6 +101,18 @@ func initDB() {
 		`VALUES (0, 0, 0, 2, 0xffff,   25, 0x0000, 'What is one of your kinks?')`,
 		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
 		`VALUES (0, 0, 0, 2, 0xffff,   50, 0x0000, 'When is the last time you did erp or sexted with someone?')`,
+
+		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
+		`VALUES (0, 0, 0, 2, 0xffff,   50, 0x0000, 'Have you ever performed a strip tease?')`,
+		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
+		`VALUES (0, 0, 0, 2, 0xffff,   50, 0x0000, 'Do you like being bitten?  List all the places you have been bitten before.')`,
+		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
+		`VALUES (0, 0, 0, 2, 0xffff,   50, 0x0000, 'Have you ever tried rope play?')`,
+		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
+		`VALUES (0, 0, 0, 2, 0xffff,   50, 0x0000, 'Have you ever tried pee play?')`,
+		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
+		`VALUES (0, 0, 0, 2, 0xffff,   50, 0x0000, 'Have you ever masturbated live on web cam?')`,
+
 		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
 		`VALUES (0, 0, 0, 2, 0xffff,  100, 0x0000, 'Describe in detail the kinkiest thing you have ever done.')`,
 		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
