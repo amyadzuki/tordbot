@@ -37,6 +37,20 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		}
 	}
 
+	if b, t := chp(tail, "install"); b {
+		tail = t
+		for len(tail) > 0 && tail[0] == ' ' {
+			tail = tail[1:]
+		}
+		install(channel, tail)
+	} else if b, t := chp(tail, "deinstall"); b {
+		tail = t
+		deinstall(channel)
+	} else if b, t := chp(tail, "uninstall"); b {
+		tail = t
+		deinstall(channel)
+	}
+
 	var at uint32
 	very, nsfwi := 1, 1
 
@@ -157,12 +171,19 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		d := int(uint32(ent) & 1)
 		ent >>= 1
 		givePrompt(channel.GuildID, channel.ID, author, d, nsfw32, at, ent)
+	//
 	case "fix ":
 		Session.ChannelMessageSend(channel.ID,
 			"fix command coming soon")
 	case "help ":
 		Session.ChannelMessageSend(channel.ID,
 			"Prefix is 'tord' and will eventually also respond to 'tod'." +
+			"\n" +
+			"\n" + "Installation:" +
+			"\n" + "```prolog" +
+			"\n" + "'install #voice-channel'   - install to the current channel" +
+			"\n" + "'deinstall' or 'uninstall' - deinstall from the current channel" +
+			"\n" + "```" +
 			"\n" + "Pre-command modifiers:" +
 			"\n" + "```prolog" +
 			"\n" + "'car'            - mark yourself as a passenger in a vehicle" +
