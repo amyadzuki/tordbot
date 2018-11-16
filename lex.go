@@ -37,7 +37,8 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		}
 	}
 
-	var at, dare uint32
+	var at uint32
+	var dare int
 	very, nsfwi := 1, 1
 
 	for {
@@ -108,14 +109,14 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 	if channel.NSFW {
 		nsfwi++
 	} else if nsfwi > 1 {
-		nsfw = 1
+		nsfwi = 1
 	}
 	if nsfwi < 0 {
 		nsfwi = 0
 	} else if nsfwi > 3 {
 		nsfwi = 3
 	}
-	nsfw32 := uint32(nsfw)
+	nsfw32 := uint32(nsfwi)
 	if b, t := chp(tail, "add"); b {
 		tail = t
 		for len(tail) > 0 && tail[0] == ' ' {
