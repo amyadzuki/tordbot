@@ -160,7 +160,20 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 	case "help":
 		Session.ChannelMessageSend(channel.ID,
 			"Prefix is 'tord' and will eventually also respond to 'tod'." +
+			"\n" + "Pre-command modifiers:" +
+			"\n" + "```prolog" +
+			"\n" + "'car'            - mark yourself as a passenger in a vehicle" +
+			"\n" + "'home'           - mark yourself at home" +
+			"\n" + "'home alone'     - mark yourself home alone" +
+			"\n" + "'nsfw'           - request a more NSFW prompt" +
+			"\n" + "'school'         - mark yourself at school" +
+			"\n" + "'sfw'            - request a less NSFW prompt" +
+			"\n" + "'very nsfw'      - request a much more NSFW prompt" +
+			"\n" + "'very sfw'       - request a much less NSFW prompt" +
+			"\n" + "'work'           - mark yourself at work" +
+			"\n" + "```" +
 			"\n" + "Command list:" +
+			"\n" + "```prolog" +
 			"\n" + "'truth'          - get a truth prompt" +
 			"\n" + "'dare'           - get a dare prompt" +
 			"\n" + "'go' or 'either' - get a prompt of a random type" +
@@ -168,6 +181,7 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 			"\n" + "'invite'         - the invite link" +
 			"\n" + "'pass' or 'skip' - skip your turn" +
 			"\n" + "'suggest'        - get a link to the suggestion doc" +
+			"\n" + "```" +
 			"")
 	case "invite":
 		Session.ChannelMessageSend(channel.ID,
