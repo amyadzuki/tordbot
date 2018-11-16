@@ -18,7 +18,7 @@ func chp(s, prefix string) (bool, string) {
 }
 
 func lex(s *discordgo.Session, m *discordgo.Message) {
-	tail := m.Content + ' '
+	tail := m.Content + " "
 	if b, t := chp(tail, "tord"); b {
 		tail = t
 	} else if b, t := chp(tail, "tod"); false && b {
