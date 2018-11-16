@@ -29,10 +29,23 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		for len(tail) > 0 && tail[0] == ' ' {
 			tail = tail[1:]
 		}
-		if b, t := chp(tail, "at "); b {
+		if false {
+		} else if b, t := chp(tail, "alone "); b {
+			if (at & AT_HOME) != 0 {
+				at |= AT_HOMEALONE
+			}
+		} else if b, t := chp(tail, "at "); b {
 			tail = t
 		} else if b, t := chp(tail, "anywhere "); b {
 			at |= AT_ANYWHERE
+		} else if b, t := chp(tail, "home "); b {
+			at |= AT_HOME
+		} else if b, t := chp(tail, "homealone "); b {
+			at |= AT_HOMEALONE
+		} else if b, t := chp(tail, "school "); b {
+			at |= AT_SCHOOL
+		} else if b, t := chp(tail, "work "); b {
+			at |= AT_WORK
 		}
 	}
 }
