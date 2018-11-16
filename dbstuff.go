@@ -1,5 +1,9 @@
 package main
 
+import (
+	"github.com/bwmarrin/discordgo"
+)
+
 const (
 	AT_UNSPECIFIED = uint32(1) << iota
 	AT_HOMEALONE
@@ -66,8 +70,8 @@ func givePrompt(guildID, channelID, author string, dare int, nsfw, at uint32, en
 	return
 }
 
-func install(vis string) {
+func install(c *discordgo.Channel, vis string) {
 }
 
-func deinstall() {
+func deinstall(c *discordgo.Channel) {
 }
