@@ -25,6 +25,7 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		return
 	}
 
+	author := mc.Message.Author.ID
 	channelIDTmp := mc.Message.ChannelID
 	channel, err := Session.State.Channel(channelIDTmp)
 	if err != nil {
@@ -35,8 +36,7 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 	}
 
 	var at, dare uint32
-	very := 1
-	var sfw, nsfw bool
+	very, nsfwi := 1, 1
 
 	for {
 		for len(tail) > 0 && tail[0] == ' ' {
@@ -56,11 +56,13 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 		} else if b, t := chp(tail, "homealone "); b {
 			at |= AT_HOMEALONE
 		} else if b, t := chp(tail, "nsfw "); b {
-			nsfw = true
+			nsfwi += very
+			very = 1
 		} else if b, t := chp(tail, "school "); b {
 			at |= AT_SCHOOL
 		} else if b, t := chp(tail, "sfw "); b {
-			sfw = true
+			nsfwi -= very
+			very = 1
 		} else if b, t := chp(tail, "very "); b {
 			very++
 		} else if b, t := chp(tail, "work "); b {
@@ -69,19 +71,58 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 			break
 		}
 	}
+	if at < 1 {
+		at = AT_UNSPECIFIED
+	}
+	nsfwaddi := nsfwi
 	ent := PRG.Uint64()
+	if (ent & 1) == 0 {
+		if (ent & 2) == 0 {
+			nsfwi++
+		} else {
+			nsfwi--
+		}
+		ent >>= 1
+	}
+	ent >>= 1
+	if channel.NSFW {
+		nsfwi++
+	} else if nsfwi > 1 {
+		nsfw = 1
+	}
+	if nsfwi < 0 {
+		nsfwi = 0
+	} else if nsfwi > 3 {
+		nsfwi = 3
+	}
+	nsfw32 := uint32(nsfw)
+	if b, t := chp(tail, "add"); b {
+		if nsfwaddi < 0 {
+			nsfwaddi = 0
+		} else if nsfwaddi > 3 {
+			nsfwaddi = 3
+		}
+		nsfwadd32 := uint32(nsfwaddi)
+		return
+	}
 	switch tail {
 	case "truth":
-		givePrompt(channel.GuildID, channel.ID, author, 0, u32nsfw, at, ent)
+		givePrompt(channel.GuildID, channel.ID, author, 0, nsfw32, at, ent)
 	case "dare":
-		givePrompt(channel.GuildID, channel.ID, author, 1, u32nsfw, at, ent)
+		givePrompt(channel.GuildID, channel.ID, author, 1, nsfw32, at, ent)
 	case "go":
 		d := uint32(ent) & 1
 		ent >>= 1
-		givePrompt(channel.GuildID, channel.ID, author, d, u32nsfw, at, ent)
+		givePrompt(channel.GuildID, channel.ID, author, d, nsfw32, at, ent)
 	case "fix":
 	case "help":
 	case "invite":
+		Session.ChannelMessageSend(channel.ID,
+			"<https://discordapp.com/oauth2/authorize?client_id=" +
+			"512117311" + "415648275&scope=bot&permissions=378" + "944>")
 	case "pass", "skip":
+	default:
+		Session.ChannelMessageSend(channel.ID,
+			"Unknown command ``" + tail + "\u00b4\u00b4.")
 	}
 }
