@@ -42,9 +42,6 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 
 	if b, t := chp(tail, "install"); b {
 		tail = t
-		for len(tail) > 0 && tail[0] == ' ' {
-			tail = tail[1:]
-		}
 		install(channel, tail)
 		return
 	} else if b, t := chp(tail, "uninstall"); b {
