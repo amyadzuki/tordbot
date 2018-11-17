@@ -26,6 +26,9 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 	} else {
 		return
 	}
+	for len(tail) > 0 && tail[0] == ' ' {
+		tail = tail[1:]
+	}
 
 	author := m.Author.ID
 	channelIDTmp := m.ChannelID
