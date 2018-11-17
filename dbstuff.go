@@ -70,10 +70,80 @@ func givePrompt(guildID, channelID, author string, dare int, nsfw, at uint32, en
 	return
 }
 
-func install(c *discordgo.Channel, vis string) {
+func install(c *discordgo.Channel, tail string) {
+	for len(tail) > 0 && (tail[0] < '0' || tail[0] > '9') {
+		tail = tail[1:]
+	}
+	for len(tail) > 0 && (tail[len(tail) - 1] < '0' || tail[len(tail) - 1] > '9') {
+		tail = tail[:len(tail) - 1]
+	}
+	Session.ChannelMessageSend(c.ID, "[[" + tail + "]]")
+	channelIDTmp := tail
+	voice, err := Session.State.Channel(channelIDTmp)
+	if err != nil {
+		voice, err = Session.Channel(channelIDTmp)
+		if err != nil {
+			Session.ChannelMessageSend(c.ID, "Oops, " + channelIDTmp +
+				" does not look like a channel ID number.")
+			return
+		}
+	}
+
+	cleanForInstall(voice.ID, c.ID)
+
+	stmt, err := DB.Prepare(`INSERT INTO "Channels" ("vid", "cid") VALUES (?, ?)`)
+	if err != nil {
+		Session.ChannelMessageSend(c.ID,
+			"Error installing during SQL Prepare: ``" +
+			err.Error() + "\u00b4\u00b4.")
+		return
+	}
+	_, err = stmt.Exec(voice.ID, c.ID)
+	if err != nil {
+		Session.ChannelMessageSend(c.ID,
+			"Error installing during SQL Exec: ``" +
+			err.Error() + "\u00b4\u00b4.")
+		return
+	}
+	Session.ChannelMessageSend(c.ID,
+		"Installation successful!")
+	return
+}
+
+cleanForInstall(vid, cid string) {
+	stmt, err := DB.Prepare(`DELETE FROM "Channels" WHERE "vid" = ? OR "cid" = ?`)
+	if err != nil {
+		Session.ChannelMessageSend(cid,
+			"Error cleaning for install during SQL Prepare: ``" +
+			err.Error() + "\u00b4\u00b4.")
+		return
+	}
+	_, err = stmt.Exec(vid, cid)
+	if err != nil {
+		Session.ChannelMessageSend(cid,
+			"Error cleaning for install during SQL Exec: ``" +
+			err.Error() + "\u00b4\u00b4.")
+		return
+	}
 }
 
 func deinstall(c *discordgo.Channel) {
+	stmt, err := DB.Prepare(`DELETE FROM "Channels" WHERE "cid" = ?`)
+	if err != nil {
+		Session.ChannelMessageSend(c.ID,
+			"Error deinstalling during SQL Prepare: ``" +
+			err.Error() + "\u00b4\u00b4.")
+		return
+	}
+	_, err = stmt.Exec(c.ID)
+	if err != nil {
+		Session.ChannelMessageSend(c.ID,
+			"Error deinstalling during SQL Exec: ``" +
+			err.Error() + "\u00b4\u00b4.")
+		return
+	}
+	Session.ChannelMessageSend(c.ID,
+		"Deinstallation successful!")
 }
 
 func voiceStateUpdate(vs *discordgo.VoiceState) {
