@@ -217,7 +217,7 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 	case "invite ":
 		Session.ChannelMessageSend(channel.ID,
 			"<https://discordapp.com/oauth2/authorize?client_id=" +
-			"512117311" + "415648275&scope=bot&permissions=378" + "944>")
+			"512117311" + "415648275&scope=bot&permissions=379" + "968>")
 	case "pass ", "skip ":
 		Session.ChannelMessageSend(channel.ID,
 			"pass/skip command coming soon")
