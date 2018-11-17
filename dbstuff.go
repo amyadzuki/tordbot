@@ -199,7 +199,7 @@ func removeFromGame(uid, cid string) {
 		}
 		return
 	}
-	_, err = stmt.Exec(guildID, dare, nsfw, at, prompt, author)
+	_, err = stmt.Exec(uid)
 	if err != nil {
 		if len(cid) > 0 {
 			Session.ChannelMessageSend(cid,
@@ -209,7 +209,7 @@ func removeFromGame(uid, cid string) {
 		return
 	}
 	if len(cid) > 0 {
-		Session.ChannelMessageSend(cid, "<@!" + vs.UserID + "> left the game!")
+		Session.ChannelMessageSend(cid, "<@!" + uid + "> left the game!")
 	}
 	return
 }
