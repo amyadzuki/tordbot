@@ -152,13 +152,13 @@ func initDB() {
 		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
 		`VALUES (0, 0, 1, 2, 0xffff,   25, 0x0000, 'Take a picture of your thighs right now and post it to this channel.')`,
 		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
-		`VALUES (0, 0, 1, 2, 0xffff,   50, 0x0000, 'Name and remove one article of clothing.  You must not put on any more clothing until the end of the game.')`,
+		`VALUES (0, 0, 1, 2, 0xffff,   50, 0x0000, 'Name and remove one article of clothing.  No adding more clothing until the end of the game.')`,
 		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
 		`VALUES (0, 0, 1, 2, 0xffff,  100, 0x0000, 'Unmute voice if muted.  Then moan audibly.')`,
 		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
 		`VALUES (0, 0, 1, 2, 0xffff,  100, 0x0000, 'Walk outside for 15 seconds in whatever you are wearing.')`,
 		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
-		`VALUES (0, 0, 1, 2, 0xffff,  250, 0x0000, 'Name and remove one article of clothing.  You must not put on any more clothing until the end of the game.  Then, take a full-body selfie and post it to this channel.')`,
+		`VALUES (0, 0, 1, 2, 0xffff,  250, 0x0000, 'Name and remove one article of clothing.  No adding more clothing until the end of the game.  Then, take a full-body selfie and post it to this channel.')`,
 		`INSERT INTO "Prompts" ("guild", "blame", "dare", "nsfw", "at", "score", "flags", "prompt") ` +
 		`VALUES (0, 0, 1, 2, 0xffff,  250, 0x0000, 'Unmute voice if muted.  Then masturbate rapidly for 60 seconds.')`,
 		//
