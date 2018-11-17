@@ -77,4 +77,69 @@ func deinstall(c *discordgo.Channel) {
 }
 
 func voiceStateUpdate(vs *discordgo.VoiceState) {
+	stmt, err := DB.Prepare(`SELECT "cid" FROM "Channels" WHERE "vid" = ? LIMIT 1`)
+	if err != nil {
+		return
+	}
+	rows, err := stmt.Query(vs.ChannelID)
+	if err != nil {
+		return
+	}
+	defer rows.Close()
+	if !rows.Next() {
+		voiceStateLeft(vs)
+		return
+	}
+	var vid string
+	err = rows.Scan(&vid)
+	if err != nil {
+		return
+	}
+	Session.ChannelMessageSend(vid, "<@!" + vs.UserID + "> joined the game!")
+}
+
+func voiceStateLeft(vs *discordgo.VoiceState) {
+	stmt, err := DB.Prepare(`SELECT "cid" FROM "Users" WHERE "uid" = ? LIMIT 1`)
+	if err != nil {
+		return
+	}
+	rows, err := stmt.Query(vs.ChannelID)
+	if err != nil {
+		return
+	}
+	defer rows.Close()
+	if !rows.Next() {
+		return
+	}
+	var cid string
+	err = rows.Scan(&cid)
+	if err != nil {
+		return
+	}
+	removeFromGame(vs.UserID, cid)
+}
+
+func removeFromGame(uid, cid string) {
+	stmt, err := DB.Prepare(`DELETE FROM "Users" WHERE "uid" = ?`)
+	if err != nil {
+		if len(cid) > 0 {
+			Session.ChannelMessageSend(cid,
+				"Error deleting user during SQL Prepare: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	_, err = stmt.Exec(guildID, dare, nsfw, at, prompt, author)
+	if err != nil {
+		if len(cid) > 0 {
+			Session.ChannelMessageSend(cid,
+				"Error deleting user during SQL Exec: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	if len(cid) > 0 {
+		Session.ChannelMessageSend(cid, "<@!" + vs.UserID + "> left the game!")
+	}
+	return
 }
