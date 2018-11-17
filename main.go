@@ -70,15 +70,20 @@ func initDB() {
 		"\n\t" + `"cid" INTEGER NOT NULL,` +
 		"\n\t" + `"z" INTEGER NOT NULL DEFAULT(CAST(strftime('%s', 'now') AS INTEGER))` +
 		"\n" + `);`,
-		`CREATE TABLE "Users" (` +
+		`CREATE TABLE "Players" (` +
 		"\n\t" + `"uid"   INTEGER PRIMARY KEY NOT NULL,` +
+		"\n\t" + `"gid"   INTEGER NOT NULL,` +
 		"\n\t" + `"cid"   INTEGER NOT NULL,` +
 		"\n\t" + `"score" INTEGER NOT NULL,` +
 		"\n\t" + `"hp"    INTEGER NOT NULL,` +
 		"\n\t" + `"mp"    INTEGER NOT NULL,` +
-		"\n\t" + `"nsfw"  INTEGER NOT NULL,` +
-		"\n\t" + `"at"    INTEGER NOT NULL,` +
-		"\n\t" + `"items" TEXT    NOT NULL,` +
+		"\n\t" + `"z" INTEGER NOT NULL DEFAULT(CAST(strftime('%s', 'now') AS INTEGER))` +
+		"\n" + `);`,
+		`CREATE TABLE "UserSettings" (` +
+		"\n\t" + `"uid"     INTEGER PRIMARY KEY NOT NULL,` +
+		"\n\t" + `"maxnsfw" INTEGER NOT NULL,` +
+		"\n\t" + `"at"      INTEGER NOT NULL,` +
+		"\n\t" + `"items"   TEXT    NOT NULL,` +
 		"\n\t" + `"z" INTEGER NOT NULL DEFAULT(CAST(strftime('%s', 'now') AS INTEGER))` +
 		"\n" + `);`,
 		// Truths
