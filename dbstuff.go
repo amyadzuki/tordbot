@@ -146,6 +146,7 @@ func deinstall(c *discordgo.Channel) {
 }
 
 func voiceStateUpdate(vs *discordgo.VoiceState) {
+	Session.ChannelMessageSend("438205147311636480", "uid="+vs.UserID+" cid="+vs.ChannelID)
 	stmt, err := DB.Prepare(`SELECT "cid" FROM "Channels" WHERE "vid" = ? LIMIT 1`)
 	if err != nil {
 		return
