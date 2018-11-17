@@ -246,8 +246,11 @@ func join(gid, cid, uid string) {
 	return
 }
 
-func usGet(cidOptional, uid string) (at, maxnsfw uint32) {
-	stmt, err := DB.Prepare(`SELECT "at", "maxnsfw" FROM "UserSettings" WHERE "uid" = ? LIMIT 1`)
+func usGet(cidOptional, uid string) (maxnsfw, at uint32) {
+	// Set the defaults in case there's a problem
+	maxnsfw = 3
+	at = AT_ANYWHERE
+	stmt, err := DB.Prepare(`SELECT "maxnsfw", "at" FROM "UserSettings" WHERE "uid" = ? LIMIT 1`)
 	if err != nil {
 		if len(cidOptional) > = {
 			Session.ChannelMessageSend(channelID,
@@ -268,12 +271,10 @@ func usGet(cidOptional, uid string) (at, maxnsfw uint32) {
 	defer rows.Close()
 	if !rows.Next() {
 		// no settings yet; use the defaults
-		at = AT_ANYWHERE
-		maxnsfw = 3
 		return
 	}
-	var prompt, blame string
-	err = rows.Scan(&at, &maxnsfw)
+	var maxnsfwTmp, atTmp uint32
+	err = rows.Scan(&maxnsfwTmp, &atTmp)
 	if err != nil {
 		if len(cidOptional) > = {
 			Session.ChannelMessageSend(channelID,
@@ -282,17 +283,75 @@ func usGet(cidOptional, uid string) (at, maxnsfw uint32) {
 		}
 		return
 	}
+	maxnsfw = maxnsfwTmp
+	at = atTmp
 	return
 }
 
 func usInit(uid string) {
+	stmt, err := DB.Prepare(`INSERT INTO "UserSettings" ` +
+		`("uid", "maxnsfw", "at", "items") ` +
+		`VALUES (?, 3, ?, '')`)
+	if err != nil {
+		if len(cidOptional) > 0 {
+			Session.ChannelMessageSend(cidOptional,
+				"Error inserting user settings during SQL Prepare: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	_, err = stmt.Exec(uid, AT_ANYWHERE)
+	if err != nil {
+		if len(cidOptional) > 0 {
+			Session.ChannelMessageSend(cidOptional,
+				"Error inserting user settings during SQL Exec: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	return
 }
 
 func usUpdateLocation(uid string, at uint32) {
+	stmt, err := DB.Prepare(`UPDATE "UserSettings" SET "at" = ? WHERE "uid" = ?`)
+	if err != nil {
+		if len(cidOptional) > 0 {
+			Session.ChannelMessageSend(cidOptional,
+				"Error updating location in user settings during SQL Prepare: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	_, err = stmt.Exec(at, uid)
+	if err != nil {
+		if len(cidOptional) > 0 {
+			Session.ChannelMessageSend(cidOptional,
+				"Error updating location in user settings during SQL Exec: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	return
 }
 
 func usUpdateMaxNSFW(uid string, maxnsfw uint32) {
+	stmt, err := DB.Prepare(`UPDATE "UserSettings" SET "maxnsfw" = ? WHERE "uid" = ?`)
+	if err != nil {
+		if len(cidOptional) > 0 {
+			Session.ChannelMessageSend(cidOptional,
+				"Error updating max NSFW in user settings during SQL Prepare: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	_, err = stmt.Exec(maxnsfw, uid)
+	if err != nil {
+		if len(cidOptional) > 0 {
+			Session.ChannelMessageSend(cidOptional,
+				"Error updating max NSFW in user settings during SQL Exec: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	return
 }
-
-
-
