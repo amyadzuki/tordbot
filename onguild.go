@@ -5,5 +5,5 @@ import (
 )
 
 func onVoiceStateUpdate(s *discordgo.Session, vsu *discordgo.VoiceStateUpdate) {
-	voiceStateUpdate(s, vsu.VoiceState)
+	voiceStateUpdate(vsu.VoiceState)
 }
