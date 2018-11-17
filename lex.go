@@ -46,12 +46,15 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 			tail = tail[1:]
 		}
 		install(channel, tail)
-	} else if b, t := chp(tail, "deinstall"); b {
-		tail = t
-		deinstall(channel)
+		return
 	} else if b, t := chp(tail, "uninstall"); b {
 		tail = t
 		deinstall(channel)
+		return
+	} else if b, t := chp(tail, "deinstall"); b {
+		tail = t
+		deinstall(channel)
+		return
 	}
 
 	var at uint32
@@ -185,7 +188,7 @@ func lex(s *discordgo.Session, m *discordgo.Message) {
 			"\n" + "Installation:" +
 			"\n" + "```prolog" +
 			"\n" + "'install #voice-channel'   - install to the current channel" +
-			"\n" + "'deinstall' or 'uninstall' - deinstall from the current channel" +
+			"\n" + "'uninstall' or 'deinstall' - uninstall from the current channel" +
 			"\n" + "```" +
 			"\n" + "Pre-command modifiers:" +
 			"\n" + "```prolog" +
