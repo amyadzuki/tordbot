@@ -75,3 +75,6 @@ func install(c *discordgo.Channel, vis string) {
 
 func deinstall(c *discordgo.Channel) {
 }
+
+func voiceStateUpdate(vs *discordgo.VoiceState) {
+}
