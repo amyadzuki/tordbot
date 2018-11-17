@@ -249,7 +249,7 @@ func join(gid, cid, uid string) {
 func usGet(cidOptional, uid string) (maxnsfw, at uint32) {
 	// Set the defaults in case there's a problem
 	maxnsfw = 3
-	at = AT_ANYWHERE
+	at = AT_HOME
 	stmt, err := DB.Prepare(`SELECT "maxnsfw", "at" FROM "UserSettings" WHERE "uid" = ? LIMIT 1`)
 	if err != nil {
 		if len(cidOptional) > = {
@@ -300,7 +300,7 @@ func usInit(uid string) {
 		}
 		return
 	}
-	_, err = stmt.Exec(uid, AT_ANYWHERE)
+	_, err = stmt.Exec(uid, AT_HOME)
 	if err != nil {
 		if len(cidOptional) > 0 {
 			Session.ChannelMessageSend(cidOptional,
