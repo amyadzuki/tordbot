@@ -41,6 +41,7 @@ func main() {
 	Session.AddHandler(onMessageCreate)
 	Session.AddHandler(onMessageReactionAdd)
 	Session.AddHandler(onMessageReactionRemove)
+	Session.AddHandler(onVoiceStateUpdate)
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	if err := Session.Open(); err != nil {
