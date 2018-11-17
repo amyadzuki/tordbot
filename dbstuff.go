@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -148,7 +146,6 @@ func deinstall(c *discordgo.Channel) {
 }
 
 func voiceStateUpdate(vs *discordgo.VoiceState) {
-	fmt.Println("438205147311636480", "uid="+vs.UserID+" cid="+vs.ChannelID)
 	stmt, err := DB.Prepare(`SELECT "cid" FROM "Channels" WHERE "vid" = ? LIMIT 1`)
 	if err != nil {
 		return
@@ -162,16 +159,17 @@ func voiceStateUpdate(vs *discordgo.VoiceState) {
 		voiceStateLeft(vs)
 		return
 	}
-	var vid string
-	err = rows.Scan(&vid)
+	var cid string
+	err = rows.Scan(&cid)
 	if err != nil {
 		return
 	}
-	Session.ChannelMessageSend(vid, "<@!" + vs.UserID + "> joined the game!")
+
+	update(cid, vs.UserID)
 }
 
-func voiceStateLeft(vs *discordgo.VoiceState) {
-	stmt, err := DB.Prepare(`SELECT "cid" FROM "Users" WHERE "uid" = ? LIMIT 1`)
+func update(cid, uid string) {
+	stmt, err := DB.Prepare(`SELECT "cid" FROM "Players" WHERE "uid" = ? LIMIT 1`)
 	if err != nil {
 		return
 	}
@@ -181,37 +179,69 @@ func voiceStateLeft(vs *discordgo.VoiceState) {
 	}
 	defer rows.Close()
 	if !rows.Next() {
+		voiceStateLeft(vs)
 		return
 	}
-	var cid string
-	err = rows.Scan(&cid)
+	var oldcid string
+	err = rows.Scan(&oldcid)
 	if err != nil {
 		return
 	}
-	removeFromGame(vs.UserID, cid)
+	if cid == oldcid {
+		return
+	}
+	leave(oldcid, uid)
+	join(cid, uid)
 }
 
-func removeFromGame(uid, cid string) {
-	stmt, err := DB.Prepare(`DELETE FROM "Users" WHERE "uid" = ?`)
+func leave(cidOptional, uid string) {
+	stmt, err := DB.Prepare(`DELETE FROM "Players" WHERE "uid" = ?`)
 	if err != nil {
-		if len(cid) > 0 {
-			Session.ChannelMessageSend(cid,
-				"Error deleting user during SQL Prepare: ``" +
+		if len(cidOptional) > 0 {
+			Session.ChannelMessageSend(cidOptional,
+				"Error deleting player during SQL Prepare: ``" +
 				err.Error() + "\u00b4\u00b4.")
 		}
 		return
 	}
 	_, err = stmt.Exec(uid)
 	if err != nil {
-		if len(cid) > 0 {
-			Session.ChannelMessageSend(cid,
-				"Error deleting user during SQL Exec: ``" +
+		if len(cidOptional) > 0 {
+			Session.ChannelMessageSend(cidOptional,
+				"Error deleting player during SQL Exec: ``" +
 				err.Error() + "\u00b4\u00b4.")
 		}
 		return
 	}
-	if len(cid) > 0 {
-		Session.ChannelMessageSend(cid, "<@!" + uid + "> left the game!")
+	if len(cidOptional) > 0 {
+		Session.ChannelMessageSend(cidOptional, "<@!" + uid + "> left the game!")
+	}
+	return
+}
+
+func join(gid, cid, uid string) {
+	stmt, err := DB.Prepare(`INSERT INTO "Players" ` +
+		`("uid", "gid", "cid", "score", "hp", "mp") ` +
+		`VALUES (?, ?, ?, 0, 12, 0)`)
+	if err != nil {
+		if len(cidOptional) > 0 {
+			Session.ChannelMessageSend(cidOptional,
+				"Error inserting player during SQL Prepare: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	_, err = stmt.Exec(uid, gid, cid)
+	if err != nil {
+		if len(cidOptional) > 0 {
+			Session.ChannelMessageSend(cidOptional,
+				"Error inserting player during SQL Exec: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	if len(cidOptional) > 0 {
+		Session.ChannelMessageSend(cidOptional, "<@!" + uid + "> joined the game!")
 	}
 	return
 }
