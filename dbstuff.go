@@ -77,7 +77,6 @@ func install(c *discordgo.Channel, tail string) {
 	for len(tail) > 0 && (tail[len(tail) - 1] < '0' || tail[len(tail) - 1] > '9') {
 		tail = tail[:len(tail) - 1]
 	}
-	Session.ChannelMessageSend(c.ID, "[[" + tail + "]]")
 	channelIDTmp := tail
 	voice, err := Session.State.Channel(channelIDTmp)
 	if err != nil {
