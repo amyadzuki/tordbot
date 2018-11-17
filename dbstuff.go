@@ -110,7 +110,7 @@ func install(c *discordgo.Channel, tail string) {
 	return
 }
 
-cleanForInstall(vid, cid string) {
+func cleanForInstall(vid, cid string) {
 	stmt, err := DB.Prepare(`DELETE FROM "Channels" WHERE "vid" = ? OR "cid" = ?`)
 	if err != nil {
 		Session.ChannelMessageSend(cid,
