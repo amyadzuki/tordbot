@@ -245,3 +245,54 @@ func join(gid, cid, uid string) {
 	}
 	return
 }
+
+func usGet(cidOptional, uid string) (at, maxnsfw uint32) {
+	stmt, err := DB.Prepare(`SELECT "at", "maxnsfw" FROM "UserSettings" WHERE "uid" = ? LIMIT 1`)
+	if err != nil {
+		if len(cidOptional) > = {
+			Session.ChannelMessageSend(channelID,
+				"Error querying user settings during SQL Prepare: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	rows, err := stmt.Query(uid)
+	if err != nil {
+		if len(cidOptional) > = {
+			Session.ChannelMessageSend(channelID,
+				"Error querying user settings during SQL Query: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	defer rows.Close()
+	if !rows.Next() {
+		// no settings yet; use the defaults
+		at = AT_ANYWHERE
+		maxnsfw = 3
+		return
+	}
+	var prompt, blame string
+	err = rows.Scan(&at, &maxnsfw)
+	if err != nil {
+		if len(cidOptional) > = {
+			Session.ChannelMessageSend(channelID,
+				"Error querying user settings during SQL Scan: ``" +
+				err.Error() + "\u00b4\u00b4.")
+		}
+		return
+	}
+	return
+}
+
+func usInit(uid string) {
+}
+
+func usUpdateLocation(uid string, at uint32) {
+}
+
+func usUpdateMaxNSFW(uid string, maxnsfw uint32) {
+}
+
+
+
