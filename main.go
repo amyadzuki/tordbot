@@ -72,6 +72,7 @@ func initDB() {
 		"\n" + `);`,
 		`CREATE TABLE "Users" (` +
 		"\n\t" + `"uid"   INTEGER PRIMARY KEY NOT NULL,` +
+		"\n\t" + `"cid"   INTEGER NOT NULL,` +
 		"\n\t" + `"score" INTEGER NOT NULL,` +
 		"\n\t" + `"hp"    INTEGER NOT NULL,` +
 		"\n\t" + `"mp"    INTEGER NOT NULL,` +
