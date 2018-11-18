@@ -6,8 +6,8 @@ import (
 )
 
 var Playing = []string{
-	"Prefix is tod",
-	"Try tod help",
+	"Prefix is tord",
+	"Try tord help",
 	"with a bunch of cuties",
 }
 
